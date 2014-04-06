@@ -72,7 +72,18 @@ Grid = {
 
 Synth = {
   key: [0,0,0,0,0],
-  keys: [[0,0,0,0,0], 0, 0, 0, 0, 0, [185.00, 220.00, 246.94, 277.18, 329.63], 0, [415.30, 493.88, 554.37, 622.25, 739.99] , [246.94, 293.66, 329.63, 369.99, 440.00], [466.16, 554.37, 622.25, 698.46, 830.61]],
+  keys: [
+    [130.81 ,155.56 , 174.61, 196.00 , 233.08], 
+    [138.59, 164.81, 185.00, 207.65, 246.94],
+    [146.83, 174.61, 196.00, 220.00, 261.63], 
+    [155.56, 185.00, 207.65, 233.08, 277.18], 
+    [164.81, 196.00, 220.00, 246.94, 293.66],
+    [174.61, 207.65, 233.08, 261.63, 311.13 ],
+    [185.00, 220.00, 246.94, 277.18, 329.63], 
+    [196.00, 233.08, 261.63, 293.66, 349.23], 
+    [415.30, 493.88, 554.37, 622.25, 739.99],
+    [246.94, 293.66, 329.63, 369.99, 440.00],
+    [466.16, 554.37, 622.25, 698.46, 830.61]],
   key_synths: [],
   init: function(){
     this.synths = {
@@ -115,9 +126,11 @@ Synth = {
     this.tempo_field = $('input#tempo');
     this.tempo_field.on('change', this.update_interval.bind(this));
     this.update_interval();
+    this.set_key(0);
   },
 
   set_key: function(key){
+    $('span#key-display').html(MHD14.notes[key]);
     this.key = this.keys[key];
     $.each(this.key, function(idx, frq){
       this.key_synths[idx].args[0].args[0].freq = frq / 2;
@@ -130,15 +143,26 @@ Synth = {
   },
 
   play_key: function(key){
-    //console.log(key);
+    console.log(key);
     this.key_synths[key].args[1].bang();
   },
 
   update_interval: function (){
     this.tempo = parseFloat(this.tempo_field.val());
+    $('span#tempo-display').html(this.tempo);
     this.interval = 60./this.tempo*1000./4;
-    if (this.time)
+    if (this.timer)
       this.timer.interval = this.interval;
+  },
+
+  bump_tempo: function(){
+    this.tempo_field.val(parseInt(this.tempo_field.val()) + 1);
+    this.update_interval();
+  },
+
+  drop_tempo: function(){
+    this.tempo_field.val(parseInt(this.tempo_field.val()) - 1);
+    this.update_interval();
   },
 
   play_beat: function (){
@@ -168,6 +192,9 @@ MHD14 = {
   playing: false,
   current_beat: 0,
   keys: {97: 0, 122: 1, 101: 2, 114: 3, 116: 4, 121: 5, 117: 6, 105: 7, 111: 8, 112: 9},
+  notes: ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'],
+  scroll_top: 0,
+  key: 0,
   init: function(){
     this.controls.toggle_play = $('input#toggle-play');
     this.controls.toggle_play.on('click', this.toggle_play.bind(this));
@@ -178,15 +205,29 @@ MHD14 = {
   },
 
   handle_keys: function(event){
-    //console.log(event.which);
+    console.log(event.which);
     if ($(event.target).is('input'))
       return;
     if (event.which == 32)
       this.toggle_play();
     $.each(this.keys, function(k, v){
-      if (event.which == k)
+      if (event.which == k){
+        this.key = v;
         Synth.play_key(v);
-    });
+      }
+    }.bind(this));
+    if (event.which == 62){
+      this.key = this.key == 11 ? 0 : this.key + 1;
+      Synth.set_key(this.key);
+    }
+    if (event.which == 60){
+      this.key = this.key == 0 ? 11 : this.key - 1;
+      Synth.set_key(this.key); 
+    }
+    if (event.which == 43)
+      Synth.bump_tempo();
+    if (event.which == 45)
+      Synth.drop_tempo();
   },
 
   toggle_play: function(){

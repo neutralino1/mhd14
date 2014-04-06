@@ -1,3 +1,27 @@
+section#search{
+  margin-left: auto;
+  margin-right: auto;
+  width:500px;
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+section#search input{
+  width: 30%;
+  float: left;
+  margin-right: 10px;
+}
+
+section#info{
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+section#info{
+  font-size: 3em;
+  font-weight: bold;
+}
+
 table#grid {
   margin-left: auto;
   margin-right: auto;
@@ -22,4 +46,9 @@ table#grid td.current div {
 
 table#grid td.active div {
   background-color: #f67c5f !important;
+}
+
+section#credits {
+  text-align: center;
+  margin: 80px;
 }

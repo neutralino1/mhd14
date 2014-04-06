@@ -5,13 +5,24 @@
     <script src='jquery-2.1.0.min.js'></script>
     <script src='timbre.js'></script>
     <script src='index.js'></script>
-    <link rel='stylesheet' href='index.css' type='text/css'></style>
+    <link rel='stylesheet' href='bootstrap/css/bootstrap-theme.min.css' type='text/css' />
+    <link rel='stylesheet' href='bootstrap/css/bootstrap.min.css' type='text/css' />
+    <link rel='stylesheet' href='index.css' type='text/css' />
   </head>
   <body>
-    <input type='number' id='tempo' value='60'/>
-    <input type='text' id='artist' value='Ella Eyre'/>
-    <input type='text' id='title' value='Deeper' />
-    <input type='button' id='search' value='Search' />
+    <section id='search'>
+      <!--<form role='form' class="form-inline">-->
+        <input type='hidden' id='tempo' value='60' class='form-control'/>
+        <input type='text' id='artist' value='Ella Eyre' class='form-control'/>
+        <input type='text' id='title' value='Deeper' class='form-control'/>
+        <input type='button' id='search' value='Search' class='btn btn-primary'/>
+      <!--</form>-->
+    <div class='clearfix'></div>
+    </section>
+    <section id='info'>
+      <span id='tempo-display' class='text-muted'>60</span>
+      <span id='key-display' class='text-muted'>C</span>
+    </section>
     <!--<input type='button' id='toggle-play' value='PLAY'/>-->
     <table id='grid'>
       <tr id='hh'>
@@ -69,6 +80,20 @@
         <td><div></div></td>
       </tr>
     </table>
+    <section id="credits" class="text-muted">
+      Made by
+      <a href='http://twitter.com/neutralino' target='new'>
+        @neutralino1
+      </a>
+      thanks to
+      <a href='http://mohayonao.github.io/timbre/' target='new'>
+        timbre.js
+      </a>
+      and
+      <a href='http://echonest.com/' target='new'>
+        The EchoNest
+      </a>
+    </section>
   </body>
 
 </html>
